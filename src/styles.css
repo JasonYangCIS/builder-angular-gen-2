@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+/* Design tokens shared by the Builder custom components. */
+:root {
+  --brand-bg: #070914;
+  --brand-bg-alt: #0b0e1f;
+  --brand-accent-1: #7c5cff;
+  --brand-accent-2: #19d3ff;
+  --brand-accent-3: #ff5ca8;
+}
