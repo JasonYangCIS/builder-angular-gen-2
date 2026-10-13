@@ -12,7 +12,7 @@ const builderRoute = {
 
 export const routes: Routes = [
   // Client-only route used as the Builder editor's preview URL (see README).
-  { path: 'editor', component: BuilderPage, resolve: { content: builderEditorResolver } },
+  { path: '__editor', component: BuilderPage, resolve: { content: builderEditorResolver } },
   // Explicit homepage route so it can be prerendered (SSG).
   { path: '', ...builderRoute },
   { path: '**', ...builderRoute },

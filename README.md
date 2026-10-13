@@ -10,7 +10,7 @@ the first HTML already contains the content and its styles.
 | Route | Mode |
 | --- | --- |
 | `/` and every published Builder page | SSG (prerendered at build time) |
-| `/editor` | Client-only, for the Builder visual editor |
+| `/__editor` | Client-only, for the Builder visual editor |
 | anything else | Client-side, via the `404.html` fallback |
 
 Set in `src/app/app.routes.server.ts`; the page list comes from Builder at build time
@@ -44,10 +44,10 @@ in `src/app/builder/builder.config.ts`.
 
 ## Visual editing
 
-The static pages can't show drafts, so the Builder editor uses `/editor`, a client-only route that
+The static pages can't show drafts, so the Builder editor uses `/__editor`, a client-only route that
 forwards Builder's `builder.*` query params and fetches draft content. In Builder, set the `page`
-model's preview URL to `https://jasonyangcis.github.io/builder-angular-gen-2/editor` (or
-`http://localhost:4200/editor` while developing).
+model's preview URL to `https://jasonyangcis.github.io/builder-angular-gen-2/__editor` (or
+`http://localhost:4200/__editor` while developing).
 
 ## Development
 
@@ -81,5 +81,5 @@ add a server entry (`ng add @angular/ssr`) and `express`, switch `'**'` to `Rend
 
 - Pages published after the last build aren't served until the site is rebuilt. Unknown URLs show
   "404 - Content not found" (HTTP 404 from the Pages fallback).
-- `/editor` loads and renders content in a browser test, but editing inside Builder's UI (insert menu,
+- `/__editor` loads and renders content in a browser test, but editing inside Builder's UI (insert menu,
   live updates) hasn't been verified.

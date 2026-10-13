@@ -23,7 +23,7 @@ export async function getBuilderPagePaths(): Promise<string[]> {
       // Skip entries with no static URL (e.g. targeted by other attributes).
       if (typeof url === 'string' && url.startsWith('/') && !url.includes('*')) {
         const path = url.replace(/^\/+|\/+$/g, '');
-        if (path && path !== 'editor') paths.add(path);
+        if (path && path !== '__editor') paths.add(path);
       }
     }
     if (!entries || entries.length < pageSize) break;

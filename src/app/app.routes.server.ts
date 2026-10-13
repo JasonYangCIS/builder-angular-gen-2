@@ -6,7 +6,7 @@ import { getBuilderPagePaths } from './builder/builder-pages';
 // client-side rendering via 404.html.
 export const serverRoutes: ServerRoute[] = [
   // Visual editor preview: needs live query params, so it is never prerendered.
-  { path: 'editor', renderMode: RenderMode.Client },
+  { path: '__editor', renderMode: RenderMode.Client },
   { path: '', renderMode: RenderMode.Prerender },
   {
     path: '**',
