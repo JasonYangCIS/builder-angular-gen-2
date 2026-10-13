@@ -12,17 +12,9 @@ Angular 22 + `@builder.io/sdk-angular`, prerendered so the first HTML already ha
 
 Output is static because GitHub Pages can't run a server. For per-request SSR, use a Node host: set `outputMode: "server"` with an SSR entry, use `RenderMode.Server`, and add your domain to `security.allowedHosts`.
 
-## FOUC fixes
-
-- Content is fetched in a route resolver, so prerender waits for it.
-- The entry is passed to the browser via `TransferState`: no second fetch or re-render.
-- Styles are inlined in the HTML.
-- No entrance animations starting at `opacity: 0`; they replay after load and flicker.
-- The build fails if Builder returns nothing for `/`, instead of deploying a blank page.
-
 ## Visual editing
 
-In Builder, set the `page` model's preview URL to `https://jasonyangcis.github.io/builder-angular-gen-2/__editor` (or `http://localhost:4200/__editor`). Editing inside Builder's UI is unverified.
+The `page` model's preview URL is `https://jasonyangcis.github.io/builder-angular-gen-2/__editor` (use `http://localhost:4200/__editor` for local development). Editing inside Builder's UI is unverified.
 
 ## Develop
 
