@@ -1,4 +1,4 @@
-# Builder.io + Angular 22: SSG without FOUC
+# Builder.io + Angular 22: SSG
 
 Angular 22 + `@builder.io/sdk-angular`, prerendered so the first HTML already has the content and styles.
 
