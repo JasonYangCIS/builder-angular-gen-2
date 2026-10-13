@@ -9,10 +9,12 @@ the first HTML already contains the content and its styles.
 
 | Route | Mode |
 | --- | --- |
-| `/` | SSG (prerendered at build time) |
-| everything else | Client-side, via the `404.html` fallback |
+| `/` and every published Builder page | SSG (prerendered at build time) |
+| `/editor` | Client-only, for the Builder visual editor |
+| anything else | Client-side, via the `404.html` fallback |
 
-Set in `src/app/app.routes.server.ts`. The build is `outputMode: "static"` because GitHub Pages only
+Set in `src/app/app.routes.server.ts`; the page list comes from Builder at build time
+(`builder-pages.ts`). The build is `outputMode: "static"` because GitHub Pages only
 serves static files. Per-request SSR also worked in this repo but was removed for static hosting
 (see [Enabling SSR](#enabling-ssr)).
 
@@ -20,12 +22,14 @@ serves static files. Per-request SSR also worked in this repo but was removed fo
 
 1. **Fetch before the route activates.** `builder-content.resolver.ts` is a route resolver, so
    prerender waits for the Builder entry. Fetching in `ngOnInit` or an `effect` leaves the HTML empty.
-2. **Inline styles.** Component styles and critical CSS ship in the HTML. Check with `curl` on a built
+2. **No second fetch in the browser.** The entry travels in the HTML through `TransferState`, so the
+   client reuses it instead of fetching and re-rendering.
+3. **Inline styles.** Component styles and critical CSS ship in the HTML. Check with `curl` on a built
    `index.html`.
-3. **No entrance animations starting at `opacity: 0`.** The server HTML plays them and they replay
+4. **No entrance animations starting at `opacity: 0`.** The server HTML plays them and they replay
    after load, which looked like a flicker. Hover effects and looping animations are fine.
-4. **Hydration** is on (`provideClientHydration()`), so the browser reuses the server DOM.
-5. **Failed builds, not blank pages.** In prerender, a failed fetch or a missing published `/` entry
+5. **Hydration** is on (`provideClientHydration()`), so the browser reuses the server DOM.
+6. **Failed builds, not blank pages.** In prerender, a failed fetch or a missing published `/` entry
    throws. In the browser the resolver falls back to a "not found" view.
 
 ## Custom components
@@ -37,6 +41,13 @@ Registered in `src/app/builder/custom-components.ts`, built in `src/app/builder/
 
 The homepage content lives in Builder (model `page`, URL `/`). The public API key and model name are
 in `src/app/builder/builder.config.ts`.
+
+## Visual editing
+
+The static pages can't show drafts, so the Builder editor uses `/editor`, a client-only route that
+forwards Builder's `builder.*` query params and fetches draft content. In Builder, set the `page`
+model's preview URL to `https://jasonyangcis.github.io/builder-angular-gen-2/editor` (or
+`http://localhost:4200/editor` while developing).
 
 ## Development
 
@@ -68,6 +79,7 @@ add a server entry (`ng add @angular/ssr`) and `express`, switch `'**'` to `Rend
 
 ## Limitations
 
-- Only `/` is prerendered. Other URLs show "404 - Content not found" in the browser (HTTP 404 from
-  the Pages fallback).
-- Whether the custom components appear in Builder's visual editor insert menu is unverified.
+- Pages published after the last build aren't served until the site is rebuilt. Unknown URLs show
+  "404 - Content not found" (HTTP 404 from the Pages fallback).
+- `/editor` loads and renders content in a browser test, but editing inside Builder's UI (insert menu,
+  live updates) hasn't been verified.
